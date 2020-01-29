@@ -1,0 +1,47 @@
+//Emily Flood
+//January 28th, 2020
+
+//this code is what causes the LEDs to turn on or off depending on the lighting conditions.
+//the numbers in serial signify how bright the light is around the light sensor.
+//if the number reads less than 700, the white LED lights up.
+//if the number reads more than 700, the red LED lights up.
+
+void setup() {
+  pinMode(9, OUTPUT); //assignt output to pin 9
+  pinMode(8, OUTPUT); //assign output to pin 8
+  Serial.begin(9600); //this generates the current number based on the amount of light that the light sensor detects
+}
+
+void loop() {
+Serial.println(analogRead(5)); //reads the numbers in serial
+  if (analogRead(5) < 700) { //if the number it reads is less than 700...
+    digitalWrite(9, HIGH);//LED connected to pin 9 will light up
+    digitalWrite(8,LOW);//LED connected to pin 8 will NOT light up
+
+    for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) { // sets the value of the fade from 0 to 255
+    analogWrite(9, fadeValue); //makes pin 9 fade
+    delay(30); //30 milliseconds to end cycle
+  }
+
+    // fade out from max to min in increments of 5 points:
+    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) { // sets the value of the fade from 0 to 255
+      analogWrite(9, fadeValue); //makes pin 9 fade
+      delay(30); //30 milliseconds to end cycle
+    }
+  }else{
+    digitalWrite(9,LOW); //LED connected to pin 9 will NOT light up
+    digitalWrite(8,HIGH); //LED connected to pin 8 will light up
+    
+    // fade in from min to max in increments of 5 points:
+  for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {// sets the value of the fade from 0 to 255
+    analogWrite(8, fadeValue); //makes pin 8 fade
+    delay(30); //30 milliseconds to end cycle
+  }
+
+    // fade out from max to min in increments of 5 points:
+    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {// sets the value of the fade from 0 to 255
+      analogWrite(8, fadeValue); //makes pin 8 fade
+      delay(30); //30 milliseconds to end cycle
+    }
+  }
+}
